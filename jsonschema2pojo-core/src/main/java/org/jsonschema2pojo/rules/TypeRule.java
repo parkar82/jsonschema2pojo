@@ -68,42 +68,44 @@ public class TypeRule implements Rule<JClassContainer, JType> {
      *            the name of the node for which this "type" rule applies
      * @param node
      *            the node for which this "type" rule applies
-     * @param jClassContainer
+     * @param container
      *            the package into which any newly generated type may be placed
      * @return the Java type which, after reading the details of the given
      *         schema node, most appropriately matches the "type" specified
      */
     @Override
-    public JType apply(String nodeName, JsonNode node, JClassContainer jClassContainer, Schema schema) {
+    public JType apply(String nodeName, JsonNode node, JClassContainer container, Schema schema) {
 
         String propertyTypeName = getTypeName(node);
 
+        container = ruleFactory.getGenerationConfig().isUseNestedTypes() ? container : container.getPackage();
+        
         JType type;
 
         if (propertyTypeName.equals("object") || (node.has("properties") && node.path("properties").size() > 0)) {
 
-            type = ruleFactory.getObjectRule().apply(nodeName, node, jClassContainer.getPackage(), schema);
+            type = ruleFactory.getObjectRule().apply(nodeName, node, container, schema);
         } else if (node.has("javaType")) {
 
-            type = getJavaType(node.path("javaType").asText(), jClassContainer.owner());
+            type = getJavaType(node.path("javaType").asText(), container.owner());
         } else if (propertyTypeName.equals("string")) {
 
-            type = jClassContainer.owner().ref(String.class);
+            type = container.owner().ref(String.class);
         } else if (propertyTypeName.equals("number")) {
 
-            type = getNumberType(jClassContainer.owner(), node, ruleFactory.getGenerationConfig());
+            type = getNumberType(container.owner(), node, ruleFactory.getGenerationConfig());
         } else if (propertyTypeName.equals("integer")) {
 
-            type = getIntegerType(jClassContainer.owner(), node, ruleFactory.getGenerationConfig());
+            type = getIntegerType(container.owner(), node, ruleFactory.getGenerationConfig());
         } else if (propertyTypeName.equals("boolean")) {
 
-            type = unboxIfNecessary(jClassContainer.owner().ref(Boolean.class), ruleFactory.getGenerationConfig());
+            type = unboxIfNecessary(container.owner().ref(Boolean.class), ruleFactory.getGenerationConfig());
         } else if (propertyTypeName.equals("array")) {
 
-            type = ruleFactory.getArrayRule().apply(nodeName, node, jClassContainer.getPackage(), schema);
+            type = ruleFactory.getArrayRule().apply(nodeName, node, container, schema);
         } else {
 
-            type = jClassContainer.owner().ref(Object.class);
+            type = container.owner().ref(Object.class);
         }
 
         if (!node.has("javaType") && node.has("format")) {

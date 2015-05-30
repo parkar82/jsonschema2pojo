@@ -59,7 +59,7 @@ public class SchemaRule implements Rule<JClassContainer, JType> {
             schema = ruleFactory.getSchemaStore().create(schema, schemaNode.get("$ref").asText());
             schemaNode = schema.getContent();
 
-            if (schema.isGenerated()) {
+            if (schema.isGenerated() && !ruleFactory.getGenerationConfig().isUseNestedTypes()) {
                 return schema.getJavaType();
             }
 
@@ -70,7 +70,7 @@ public class SchemaRule implements Rule<JClassContainer, JType> {
         if (schemaNode.has("enum")) {
             javaType = ruleFactory.getEnumRule().apply(nodeName, schemaNode, generatableType, schema);
         } else {
-            javaType = ruleFactory.getTypeRule().apply(nodeName, schemaNode, generatableType.getPackage(), schema);
+            javaType = ruleFactory.getTypeRule().apply(nodeName, schemaNode, generatableType, schema);
         }
         schema.setJavaTypeIfEmpty(javaType);
 

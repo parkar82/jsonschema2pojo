@@ -58,6 +58,7 @@ public class JsonSchemaExtension implements GenerationConfig {
   boolean initializeCollections
   String classNamePrefix
   String classNameSuffix
+  boolean useNestedTypes
 
   public JsonSchemaExtension() {
     // See DefaultGenerationConfig
@@ -87,6 +88,7 @@ public class JsonSchemaExtension implements GenerationConfig {
     initializeCollections = true
     classNamePrefix = ''
     classNameSuffix = ''
+    useNestedTypes = false
   }
 
   @Override

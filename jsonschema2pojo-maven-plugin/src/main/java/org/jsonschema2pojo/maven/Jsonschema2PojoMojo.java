@@ -424,6 +424,13 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     private boolean constructorsRequiredPropertiesOnly;
 
     /**
+     * Whether generated classes shall use nested types.
+     * @parameter expression="${jsonschema2pojo.useNestedTypes}"
+     * @since
+     */
+    private boolean useNestedTypes;
+
+    /**
      * Executes the plugin, to read the given source and behavioural properties
      * and generate POJOs. The current implementation acts as a wrapper around
      * the command line interface.
@@ -706,5 +713,10 @@ public class Jsonschema2PojoMojo extends AbstractMojo implements GenerationConfi
     @Override
     public boolean isConstructorsRequiredPropertiesOnly() {
         return constructorsRequiredPropertiesOnly;
+    }
+
+    @Override
+    public boolean isUseNestedTypes() {
+        return useNestedTypes;
     }
 }

@@ -133,6 +133,9 @@ public class Arguments implements GenerationConfig {
     @Parameter(names = { "-x", "--class-suffix" }, description = "Suffix for generated class.")
     private String classNameSuffix = "";
 
+    @Parameter(names = { "-n", "--nested-types" }, description = "Wheter to use nested types for nested schema.")
+    private boolean useNestedTypes = false;
+
     private static final int EXIT_OKAY = 0;
     private static final int EXIT_ERROR = 1;
 
@@ -320,6 +323,11 @@ public class Arguments implements GenerationConfig {
     @Override
     public boolean isConstructorsRequiredPropertiesOnly() {
         return constructorsRequiredPropertiesOnly;
+    }
+
+    @Override
+    public boolean isUseNestedTypes() {
+        return useNestedTypes;
     }
 
 }

@@ -283,4 +283,11 @@ public interface GenerationConfig {
      * @return Whether generated constructors should have parameters for all properties, or only required ones.
      */
     boolean isConstructorsRequiredPropertiesOnly();
+    
+    /**
+     * Gets the 'useNestedTypes' configuration option
+     *
+     * @return Whether generated classes shall use nested types.
+     */
+    boolean isUseNestedTypes();
 }

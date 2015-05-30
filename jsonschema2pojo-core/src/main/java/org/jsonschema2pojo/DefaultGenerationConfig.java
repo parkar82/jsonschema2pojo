@@ -229,4 +229,9 @@ public class DefaultGenerationConfig implements GenerationConfig {
     public boolean isConstructorsRequiredPropertiesOnly() {
         return false;
     }
+    
+    @Override
+    public boolean isUseNestedTypes() {
+        return false;
+    }
 }

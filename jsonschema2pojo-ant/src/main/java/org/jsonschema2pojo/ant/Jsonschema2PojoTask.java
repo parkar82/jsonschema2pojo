@@ -117,6 +117,8 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
 
     private boolean constructorsRequiredPropertiesOnly = false;
 
+    private boolean useNestedTypes = false;
+
     /**
      * Execute this task (it's expected that all relevant setters will have been
      * called by Ant to provide task configuration <em>before</em> this method
@@ -213,6 +215,16 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
      */
     public void setConstructorsRequiredPropertiesOnly(boolean constructorsRequiredPropertiesOnly) {
         this.constructorsRequiredPropertiesOnly = constructorsRequiredPropertiesOnly;
+    }
+    
+    /**
+     * Sets the 'useNestedTypes' configuration option
+     * 
+     * @param useNestedTypes
+     *            Whether generated classes shall use nested types.
+     */
+    public void setUseNestedTypes(boolean useNestedTypes) {
+        this.useNestedTypes = useNestedTypes;
     }
 
     /**
@@ -687,6 +699,11 @@ public class Jsonschema2PojoTask extends Task implements GenerationConfig {
     @Override
     public boolean isConstructorsRequiredPropertiesOnly() {
         return constructorsRequiredPropertiesOnly;
+    }
+
+    @Override
+    public boolean isUseNestedTypes() {
+        return useNestedTypes;
     }
 
 }

@@ -20,9 +20,12 @@ import java.util.List;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.JsonNode;
+
 import org.jsonschema2pojo.Schema;
 import org.jsonschema2pojo.util.Inflector;
+
 import com.sun.codemodel.JClass;
+import com.sun.codemodel.JClassContainer;
 import com.sun.codemodel.JPackage;
 import com.sun.codemodel.JType;
 
@@ -34,7 +37,7 @@ import com.sun.codemodel.JType;
  * @see <a
  *      href="http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.15">http://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.15</a>
  */
-public class ArrayRule implements Rule<JPackage, JClass> {
+public class ArrayRule implements Rule<JClassContainer, JClass> {
 
     private final RuleFactory ruleFactory;
 
@@ -65,29 +68,29 @@ public class ArrayRule implements Rule<JPackage, JClass> {
      *            the name of the property which has type "array"
      * @param node
      *            the schema "type" node
-     * @param jpackage
+     * @param container
      *            the package into which newly generated types should be added
      * @return the Java type associated with this array rule, either {@link Set}
      *         or {@link List}, narrowed by the "items" type
      */
     @Override
-    public JClass apply(String nodeName, JsonNode node, JPackage jpackage, Schema schema) {
+    public JClass apply(String nodeName, JsonNode node, JClassContainer container, Schema schema) {
 
         boolean uniqueItems = node.has("uniqueItems") && node.get("uniqueItems").asBoolean();
         boolean rootSchemaIsArray = !schema.isGenerated();
 
         JType itemType;
         if (node.has("items")) {
-            itemType = ruleFactory.getSchemaRule().apply(makeSingular(nodeName), node.get("items"), jpackage, schema);
+            itemType = ruleFactory.getSchemaRule().apply(makeSingular(nodeName), node.get("items"), container, schema);
         } else {
-            itemType = jpackage.owner().ref(Object.class);
+            itemType = container.owner().ref(Object.class);
         }
 
         JClass arrayType;
         if (uniqueItems) {
-            arrayType = jpackage.owner().ref(Set.class).narrow(itemType);
+            arrayType = container.owner().ref(Set.class).narrow(itemType);
         } else {
-            arrayType = jpackage.owner().ref(List.class).narrow(itemType);
+            arrayType = container.owner().ref(List.class).narrow(itemType);
         }
 
         if (rootSchemaIsArray) {

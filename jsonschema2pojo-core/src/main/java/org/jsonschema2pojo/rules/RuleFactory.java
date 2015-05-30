@@ -78,7 +78,7 @@ public class RuleFactory {
      * 
      * @return a schema rule that can handle the "array" declaration.
      */
-    public Rule<JPackage, JClass> getArrayRule() {
+    public Rule<JClassContainer, JClass> getArrayRule() {
         return new ArrayRule(this);
     }
 
@@ -118,7 +118,7 @@ public class RuleFactory {
      * 
      * @return a schema rule that can handle the "object" declaration.
      */
-    public Rule<JPackage, JType> getObjectRule() {
+    public Rule<JClassContainer, JType> getObjectRule() {
         return new ObjectRule(this, new ParcelableHelper());
     }
 
